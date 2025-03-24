@@ -1,0 +1,12 @@
+__pycache__
+
+.env
+
+dataset
+gen_dataset
+labels.txt
+
+result
+
+models
+models_onnx
