@@ -76,12 +76,14 @@ def get_teacher_model(checkpoint: str, device: str, tokenizer: AutoTokenizer) ->
     return model
 
 def get_student_model(
-        checkpoint: str, device: str, tokenizer: AutoTokenizer, num_labels: str
+        checkpoint: str, device: str, tokenizer: AutoTokenizer, num_labels: str, id2label: dict, label2id: dict
     ) -> AutoModelForSequenceClassification:
     model = AutoModelForSequenceClassification.from_pretrained(
         checkpoint,
         problem_type="multi_label_classification",
         num_labels=num_labels,
+        id2label=id2label,
+        label2id=label2id,
     )
     model.resize_token_embeddings(len(tokenizer))
     model = model.to(device)
@@ -93,6 +95,7 @@ if __name__ == "__main__":
 
     unique_labels = ["Cung cấp thông tin", "Tương tác", "Hỏi thông tin giao hàng", "Hỗ trợ, hướng dẫn", "Yêu cầu", "Phản hồi", "Sự vụ", "UNKNOWN"]
     label2id = {label: idx for idx, label in enumerate(unique_labels)}
+    id2label = {idx: label for idx, label in enumerate(unique_labels)}
 
     tokenizer = get_tokenizer(args.teacher_model)
     
@@ -104,7 +107,7 @@ if __name__ == "__main__":
 
     device = torch.device(args.device if torch.cuda.is_available() else "cpu")
     teacher = get_teacher_model(args.teacher_model, device, tokenizer)
-    student = get_student_model(args.student_model, device, tokenizer, num_labels=len(unique_labels))
+    student = get_student_model(args.student_model, device, tokenizer, num_labels=len(unique_labels), id2label=id2label, label2id=label2id)
 
     print(f"\nLabel: {unique_labels}")
     print(f"\nTeacher: {args.teacher_model}")
