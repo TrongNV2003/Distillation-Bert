@@ -15,6 +15,8 @@ from distil_multi_intent_classification.services.evaluate import Tester
 from distil_multi_intent_classification.services.trainer import LlmTrainer
 from distil_multi_intent_classification.services.dataloader import Dataset, LlmDataCollator
 
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 
 def set_seed(seed: int) -> None:
     random.seed(seed)
