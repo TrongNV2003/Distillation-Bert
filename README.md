@@ -14,6 +14,7 @@ bash train.sh
 
 ## Result
 Teacher model: phobert-large
+
 Student model: phobert-base, phobert-base-v2
 
 | Models                 | Accuracy    | Precision   | Recall      | F1 Score     |
